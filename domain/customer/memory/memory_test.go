@@ -20,7 +20,7 @@ func TestMemory_GetCustomer(t *testing.T) {
 	}
 	id := cust.GetID()
 
-	repo := CustomerRepository{customers: map[uuid.UUID]aggregate.Customer{id: cust}}
+	repo := CustomerMemoryRepository{customers: map[uuid.UUID]aggregate.Customer{id: cust}}
 	testCases := []testCase{
 		{
 			name:        "No Customer by ID",
@@ -61,7 +61,7 @@ func TestMemory_AddCustomer(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			repo := CustomerRepository{customers: map[uuid.UUID]aggregate.Customer{}}
+			repo := CustomerMemoryRepository{customers: map[uuid.UUID]aggregate.Customer{}}
 
 			c, err := aggregate.NewCustomer(tc.cust)
 			if err != nil {

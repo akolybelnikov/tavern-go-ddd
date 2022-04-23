@@ -9,21 +9,21 @@ import (
 	"sync"
 )
 
-// CustomerRepository fulfills the customer CustomerRepository interface
-type CustomerRepository struct {
+// CustomerMemoryRepository fulfills the customer CustomerMemoryRepository interface
+type CustomerMemoryRepository struct {
 	customers map[uuid.UUID]aggregate.Customer
 	sync.Mutex
 }
 
 // New is a factory function to generate a new repository of customers
-func New() *CustomerRepository {
-	return &CustomerRepository{
+func New() *CustomerMemoryRepository {
+	return &CustomerMemoryRepository{
 		customers: make(map[uuid.UUID]aggregate.Customer),
 	}
 }
 
 // Get finds a customer by ID
-func (r *CustomerRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (r *CustomerMemoryRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
 	if c, ok := r.customers[id]; ok {
 		return c, nil
 	}
@@ -31,7 +31,7 @@ func (r *CustomerRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
 }
 
 // Add will add a new customer to the repository
-func (r *CustomerRepository) Add(c aggregate.Customer) error {
+func (r *CustomerMemoryRepository) Add(c aggregate.Customer) error {
 	if r.customers == nil {
 		r.Lock()
 		r.customers = make(map[uuid.UUID]aggregate.Customer)
@@ -48,7 +48,7 @@ func (r *CustomerRepository) Add(c aggregate.Customer) error {
 }
 
 // Update will replace an existing customer information with the new customer information
-func (r *CustomerRepository) Update(c aggregate.Customer) error {
+func (r *CustomerMemoryRepository) Update(c aggregate.Customer) error {
 	// Make sure the customer is in the repository
 	if _, ok := r.customers[c.GetID()]; !ok {
 		return fmt.Errorf("customer doesn't exist: %w", customer.ErrUpdateCustomer)

@@ -2,9 +2,11 @@
 package services
 
 import (
+	"context"
 	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/akolybelnikov/goddd/domain/customer"
 	"github.com/akolybelnikov/goddd/domain/customer/memory"
+	"github.com/akolybelnikov/goddd/domain/customer/mongo"
 	"github.com/akolybelnikov/goddd/domain/product"
 	memory2 "github.com/akolybelnikov/goddd/domain/product/memory"
 	"github.com/google/uuid"
@@ -45,6 +47,17 @@ func WithCustomerRepository(r customer.Repository) OrderConfiguration {
 func WithMemoryCustomerRepository() OrderConfiguration {
 	repo := memory.New()
 	return WithCustomerRepository(repo)
+}
+
+func WithMongoCustomerRepository(connectionString string) OrderConfiguration {
+	return func(s *OrderService) error {
+		r, err := mongo.New(context.Background(), connectionString)
+		if err != nil {
+			return err
+		}
+		s.customers = r
+		return nil
+	}
 }
 
 // WithMemoryProductRepository adds a in memory product repo and adds all input products
