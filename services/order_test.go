@@ -1,25 +1,26 @@
 package services
 
 import (
-	"github.com/akolybelnikov/goddd/aggregate"
+	"github.com/akolybelnikov/goddd/domain/customer"
+	"github.com/akolybelnikov/goddd/domain/product"
 	"github.com/google/uuid"
 	"testing"
 )
 
-func initProducts(t *testing.T) []aggregate.Product {
-	beer, err := aggregate.NewProduct("Beer", "healthy beverage", 1.99)
+func initProducts(t *testing.T) []product.Product {
+	beer, err := product.NewProduct("Beer", "healthy beverage", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
-	peanuts, err := aggregate.NewProduct("Peanuts", "Healthy snack", 0.99)
+	peanuts, err := product.NewProduct("Peanuts", "Healthy snack", 0.99)
 	if err != nil {
 		t.Error(err)
 	}
-	wine, err := aggregate.NewProduct("Wine", "Healthy drink", 2.99)
+	wine, err := product.NewProduct("Wine", "Healthy drink", 2.99)
 	if err != nil {
 		t.Error(err)
 	}
-	products := []aggregate.Product{
+	products := []product.Product{
 		beer, peanuts, wine,
 	}
 
@@ -34,7 +35,7 @@ func TestOrder_NewOrderService(t *testing.T) {
 		t.Error(err)
 	}
 
-	cust, err := aggregate.NewCustomer("Pavel")
+	cust, err := customer.NewCustomer("Pavel")
 	if err != nil {
 		t.Error(err)
 	}

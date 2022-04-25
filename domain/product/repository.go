@@ -2,7 +2,6 @@ package product
 
 import (
 	"errors"
-	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/google/uuid"
 )
 
@@ -12,9 +11,9 @@ var (
 )
 
 type Repository interface {
-	GetAll() ([]aggregate.Product, error)
-	GetByID(uuid.UUID) (aggregate.Product, error)
-	Add(aggregate.Product) error
-	Update(aggregate.Product) error
+	GetAll() ([]Product, error)
+	GetByID(uuid.UUID) (Product, error)
+	Add(Product) error
+	Update(Product) error
 	Delete(uuid.UUID) error
 }

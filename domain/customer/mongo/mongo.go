@@ -3,7 +3,7 @@ package mongo
 
 import (
 	"context"
-	"github.com/akolybelnikov/goddd/aggregate"
+	"github.com/akolybelnikov/goddd/domain/customer"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,7 +24,7 @@ type mongoCustomer struct {
 }
 
 // NewFromCustomer takes in an aggregate and converts into internal structure
-func NewFromCustomer(c *aggregate.Customer) mongoCustomer {
+func NewFromCustomer(c *customer.Customer) mongoCustomer {
 	return mongoCustomer{
 		ID:   c.GetID(),
 		Name: c.GetName(),
@@ -32,8 +32,8 @@ func NewFromCustomer(c *aggregate.Customer) mongoCustomer {
 }
 
 // ToAggregate converts into an aggregate.Customer validating the values
-func (c *mongoCustomer) ToAggregate() *aggregate.Customer {
-	aggregateCustomer := aggregate.Customer{}
+func (c *mongoCustomer) ToAggregate() *customer.Customer {
+	aggregateCustomer := customer.Customer{}
 	aggregateCustomer.SetID(c.ID)
 	aggregateCustomer.SetName(c.Name)
 
@@ -56,7 +56,7 @@ func New(ctx context.Context, connectionString string) (*CustomerMongoRepository
 	}, nil
 }
 
-func (r *CustomerMongoRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (r *CustomerMongoRepository) Get(id uuid.UUID) (customer.Customer, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -65,13 +65,13 @@ func (r *CustomerMongoRepository) Get(id uuid.UUID) (aggregate.Customer, error) 
 	var c mongoCustomer
 	err := result.Decode(&c)
 	if err != nil {
-		return aggregate.Customer{}, err
+		return customer.Customer{}, err
 	}
 
 	return *c.ToAggregate(), nil
 }
 
-func (r *CustomerMongoRepository) Add(c aggregate.Customer) error {
+func (r *CustomerMongoRepository) Add(c customer.Customer) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -83,7 +83,7 @@ func (r *CustomerMongoRepository) Add(c aggregate.Customer) error {
 	return nil
 }
 
-func (r *CustomerMongoRepository) Update(c aggregate.Customer) error {
+func (r *CustomerMongoRepository) Update(c customer.Customer) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 

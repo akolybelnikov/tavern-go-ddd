@@ -1,6 +1,8 @@
-package aggregate
+package customer
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestCustomer_NewCustomer(t *testing.T) {
 	type TestCase struct {

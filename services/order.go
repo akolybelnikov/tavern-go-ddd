@@ -3,7 +3,6 @@ package services
 
 import (
 	"context"
-	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/akolybelnikov/goddd/domain/customer"
 	"github.com/akolybelnikov/goddd/domain/customer/memory"
 	"github.com/akolybelnikov/goddd/domain/customer/mongo"
@@ -61,7 +60,7 @@ func WithMongoCustomerRepository(connectionString string) OrderConfiguration {
 }
 
 // WithMemoryProductRepository adds a in memory product repo and adds all input products
-func WithMemoryProductRepository(products []aggregate.Product) OrderConfiguration {
+func WithMemoryProductRepository(products []product.Product) OrderConfiguration {
 	return func(s *OrderService) error {
 		r := memory2.New()
 
@@ -85,7 +84,7 @@ func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID)
 		return 0, err
 	}
 
-	var products []aggregate.Product
+	var products []product.Product
 	var price float64
 	for _, id := range productIDs {
 		p, err := o.products.GetByID(id)

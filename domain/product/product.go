@@ -1,6 +1,6 @@
-// Package aggregate holds aggregates that combine many entities into a full object
+// Package product holds aggregates that combine many entities into a full object
 // Product is an aggregate that represents a product
-package aggregate
+package product
 
 import (
 	"errors"

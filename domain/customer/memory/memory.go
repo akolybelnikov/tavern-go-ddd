@@ -3,7 +3,6 @@ package memory
 
 import (
 	"fmt"
-	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/akolybelnikov/goddd/domain/customer"
 	"github.com/google/uuid"
 	"sync"
@@ -11,30 +10,30 @@ import (
 
 // CustomerMemoryRepository fulfills the customer CustomerMemoryRepository interface
 type CustomerMemoryRepository struct {
-	customers map[uuid.UUID]aggregate.Customer
+	customers map[uuid.UUID]customer.Customer
 	sync.Mutex
 }
 
 // New is a factory function to generate a new repository of customers
 func New() *CustomerMemoryRepository {
 	return &CustomerMemoryRepository{
-		customers: make(map[uuid.UUID]aggregate.Customer),
+		customers: make(map[uuid.UUID]customer.Customer),
 	}
 }
 
 // Get finds a customer by ID
-func (r *CustomerMemoryRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (r *CustomerMemoryRepository) Get(id uuid.UUID) (customer.Customer, error) {
 	if c, ok := r.customers[id]; ok {
 		return c, nil
 	}
-	return aggregate.Customer{}, customer.ErrCustomerNotFound
+	return customer.Customer{}, customer.ErrCustomerNotFound
 }
 
 // Add will add a new customer to the repository
-func (r *CustomerMemoryRepository) Add(c aggregate.Customer) error {
+func (r *CustomerMemoryRepository) Add(c customer.Customer) error {
 	if r.customers == nil {
 		r.Lock()
-		r.customers = make(map[uuid.UUID]aggregate.Customer)
+		r.customers = make(map[uuid.UUID]customer.Customer)
 		r.Unlock()
 	}
 	// Make sure this customer doesn't exist yet
@@ -48,7 +47,7 @@ func (r *CustomerMemoryRepository) Add(c aggregate.Customer) error {
 }
 
 // Update will replace an existing customer information with the new customer information
-func (r *CustomerMemoryRepository) Update(c aggregate.Customer) error {
+func (r *CustomerMemoryRepository) Update(c customer.Customer) error {
 	// Make sure the customer is in the repository
 	if _, ok := r.customers[c.GetID()]; !ok {
 		return fmt.Errorf("customer doesn't exist: %w", customer.ErrUpdateCustomer)

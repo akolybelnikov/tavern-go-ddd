@@ -1,7 +1,6 @@
 package memory
 
 import (
-	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/akolybelnikov/goddd/domain/customer"
 	"github.com/google/uuid"
 	"testing"
@@ -14,13 +13,13 @@ func TestMemory_GetCustomer(t *testing.T) {
 		expectedErr error
 	}
 
-	cust, err := aggregate.NewCustomer("Pavel")
+	cust, err := customer.NewCustomer("Pavel")
 	if err != nil {
 		t.Fatal(err)
 	}
 	id := cust.GetID()
 
-	repo := CustomerMemoryRepository{customers: map[uuid.UUID]aggregate.Customer{id: cust}}
+	repo := CustomerMemoryRepository{customers: map[uuid.UUID]customer.Customer{id: cust}}
 	testCases := []testCase{
 		{
 			name:        "No Customer by ID",
@@ -61,9 +60,9 @@ func TestMemory_AddCustomer(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			repo := CustomerMemoryRepository{customers: map[uuid.UUID]aggregate.Customer{}}
+			repo := CustomerMemoryRepository{customers: map[uuid.UUID]customer.Customer{}}
 
-			c, err := aggregate.NewCustomer(tc.cust)
+			c, err := customer.NewCustomer(tc.cust)
 			if err != nil {
 				t.Fatal(err)
 			}

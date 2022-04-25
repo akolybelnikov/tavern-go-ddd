@@ -1,7 +1,6 @@
 package memory
 
 import (
-	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/akolybelnikov/goddd/domain/product"
 	"github.com/google/uuid"
 	"testing"
@@ -9,7 +8,7 @@ import (
 
 func TestMemoryProductRepository(t *testing.T) {
 	repo := New()
-	product, err := aggregate.NewProduct("Beer", "Good for your health", 1.99)
+	product, err := product.NewProduct("Beer", "Good for your health", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
@@ -26,7 +25,7 @@ func TestMemoryProductRepository(t *testing.T) {
 
 func TestMemoryProductRepository_Get(t *testing.T) {
 	repo := New()
-	testProduct, err := aggregate.NewProduct("Beer", "Good for your health", 1.99)
+	testProduct, err := product.NewProduct("Beer", "Good for your health", 1.99)
 	if err != nil {
 		t.Error(err)
 	}
@@ -71,7 +70,7 @@ func TestMemoryProductRepository_Get(t *testing.T) {
 
 func TestMemoryProductRepository_Delete(t *testing.T) {
 	repo := New()
-	testProduct, err := aggregate.NewProduct("Beer", "Good for your health", 1.99)
+	testProduct, err := product.NewProduct("Beer", "Good for your health", 1.99)
 	if err != nil {
 		t.Error(err)
 	}

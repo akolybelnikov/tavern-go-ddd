@@ -2,27 +2,26 @@
 package memory
 
 import (
-	"github.com/akolybelnikov/goddd/aggregate"
 	"github.com/akolybelnikov/goddd/domain/product"
 	"github.com/google/uuid"
 	"sync"
 )
 
 type ProductRepository struct {
-	products map[uuid.UUID]aggregate.Product
+	products map[uuid.UUID]product.Product
 	sync.Mutex
 }
 
 // New is a factory function to generate a new repository of products
 func New() *ProductRepository {
 	return &ProductRepository{
-		products: make(map[uuid.UUID]aggregate.Product),
+		products: make(map[uuid.UUID]product.Product),
 	}
 }
 
 // GetAll returns all products as a slice. A database implementation can return an error.
-func (r *ProductRepository) GetAll() ([]aggregate.Product, error) {
-	var products []aggregate.Product
+func (r *ProductRepository) GetAll() ([]product.Product, error) {
+	var products []product.Product
 	for _, product := range r.products {
 		products = append(products, product)
 	}
@@ -30,15 +29,15 @@ func (r *ProductRepository) GetAll() ([]aggregate.Product, error) {
 }
 
 // GetByID searches for a product based on it's ID
-func (r *ProductRepository) GetByID(id uuid.UUID) (aggregate.Product, error) {
+func (r *ProductRepository) GetByID(id uuid.UUID) (product.Product, error) {
 	if product, ok := r.products[uuid.UUID(id)]; ok {
 		return product, nil
 	}
-	return aggregate.Product{}, product.ErrProductNotFound
+	return product.Product{}, product.ErrProductNotFound
 }
 
 // Add will add a new product to the repository
-func (r *ProductRepository) Add(newProduct aggregate.Product) error {
+func (r *ProductRepository) Add(newProduct product.Product) error {
 	r.Lock()
 	defer r.Unlock()
 
@@ -51,7 +50,7 @@ func (r *ProductRepository) Add(newProduct aggregate.Product) error {
 }
 
 // Update will change all values for a product based on it's ID
-func (r *ProductRepository) Update(updateProduct aggregate.Product) error {
+func (r *ProductRepository) Update(updateProduct product.Product) error {
 	r.Lock()
 	defer r.Unlock()
 

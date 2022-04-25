@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/akolybelnikov/goddd/aggregate"
+	"github.com/akolybelnikov/goddd/domain/customer"
 	"github.com/google/uuid"
 	"testing"
 )
@@ -19,7 +19,7 @@ func TestTavern(t *testing.T) {
 		t.Error(err)
 	}
 
-	customer, err := aggregate.NewCustomer("Dmitry")
+	customer, err := customer.NewCustomer("Dmitry")
 	if err != nil {
 		t.Error(err)
 	}
@@ -52,7 +52,7 @@ func TestTavern_Mongo(t *testing.T) {
 		t.Error(err)
 	}
 
-	customer, err := aggregate.NewCustomer("Dmitry")
+	customer, err := customer.NewCustomer("Dmitry")
 	if err != nil {
 		t.Error(err)
 	}
