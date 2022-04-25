@@ -1,5 +1,4 @@
-// Package valueobject holds the Value Objects interfaces of the Domain
-package valueobject
+package tavern
 
 import (
 	"github.com/google/uuid"

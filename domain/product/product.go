@@ -4,7 +4,7 @@ package product
 
 import (
 	"errors"
-	"github.com/akolybelnikov/goddd/entity"
+	"github.com/akolybelnikov/goddd"
 	"github.com/google/uuid"
 )
 
@@ -15,7 +15,7 @@ var (
 // Product is an aggregate that combines item with a price and a quantity
 type Product struct {
 	// item is the root entity which is an Item
-	item  *entity.Item
+	item  *goddd.Item
 	price float64
 	// quantity is the number of products in stock
 	quantity int
@@ -29,7 +29,7 @@ func NewProduct(name, description string, price float64) (Product, error) {
 	}
 
 	return Product{
-		item: &entity.Item{
+		item: &goddd.Item{
 			ID:          uuid.New(),
 			Name:        name,
 			Description: description,
@@ -43,7 +43,7 @@ func (p Product) GetId() uuid.UUID {
 	return p.item.ID
 }
 
-func (p Product) GetItem() *entity.Item {
+func (p Product) GetItem() *goddd.Item {
 	return p.item
 }
 
