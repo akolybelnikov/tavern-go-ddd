@@ -1,21 +1,22 @@
-package services
+package tavern
 
 import (
+	"github.com/akolybelnikov/tavern-go-ddd/services/order"
 	"github.com/google/uuid"
 	"log"
 )
 
-type TavernConfiguration func(t *Tavern) error
+type Configuration func(t *Tavern) error
 
 type Tavern struct {
 	// Order service is used to handle orders
-	OrderService *OrderService
+	OrderService *order.Service
 	// Billing service is used to handle billing
 	BillingService interface{}
 }
 
 // NewTavern takes a variable amount of TavernConfigurations and builds a Tavern
-func NewTavern(cfgs ...TavernConfiguration) (*Tavern, error) {
+func NewTavern(cfgs ...Configuration) (*Tavern, error) {
 	t := &Tavern{}
 	for _, cfg := range cfgs {
 		err := cfg(t)
@@ -28,7 +29,7 @@ func NewTavern(cfgs ...TavernConfiguration) (*Tavern, error) {
 }
 
 // WithOrderService applies a given OrderService to the Tavern
-func WithOrderService(s *OrderService) TavernConfiguration {
+func WithOrderService(s *order.Service) Configuration {
 	return func(t *Tavern) error {
 		t.OrderService = s
 		return nil

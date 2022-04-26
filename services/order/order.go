@@ -1,5 +1,5 @@
-// Package services holds all the services that connect repositories into a business flow
-package services
+// Package order holds all the services that connect repositories into a business flow
+package order
 
 import (
 	"context"
@@ -12,19 +12,19 @@ import (
 	"log"
 )
 
-// OrderConfiguration is an alias for a function that will take in a pointer to an instance of OrderService and modify it
-type OrderConfiguration func(s *OrderService) error
+// Configuration is an alias for a function that will take in a pointer to an instance of OrderService and modify it
+type Configuration func(s *Service) error
 
-// OrderService is an implementation of the OrderService
-type OrderService struct {
+// Service is an implementation of the OrderService
+type Service struct {
 	customers customer.Repository
 	products  product.Repository
 }
 
 // NewOrderService takes a variable amount of OrderConfiguration functions and returns a new OrderService
 // Each OrderConfiguration will be called in the order they are passed in
-func NewOrderService(cfgs ...OrderConfiguration) (*OrderService, error) {
-	s := &OrderService{}
+func NewOrderService(cfgs ...Configuration) (*Service, error) {
+	s := &Service{}
 	for _, cfg := range cfgs {
 		err := cfg(s)
 		if err != nil {
@@ -35,21 +35,21 @@ func NewOrderService(cfgs ...OrderConfiguration) (*OrderService, error) {
 }
 
 // WithCustomerRepository applies a given customer repository to the OrderService
-func WithCustomerRepository(r customer.Repository) OrderConfiguration {
-	return func(s *OrderService) error {
+func WithCustomerRepository(r customer.Repository) Configuration {
+	return func(s *Service) error {
 		s.customers = r
 		return nil
 	}
 }
 
 // WithMemoryCustomerRepository applies a memory customer repository to the OrderService
-func WithMemoryCustomerRepository() OrderConfiguration {
+func WithMemoryCustomerRepository() Configuration {
 	repo := memory.New()
 	return WithCustomerRepository(repo)
 }
 
-func WithMongoCustomerRepository(connectionString string) OrderConfiguration {
-	return func(s *OrderService) error {
+func WithMongoCustomerRepository(connectionString string) Configuration {
+	return func(s *Service) error {
 		r, err := mongo.New(context.Background(), connectionString)
 		if err != nil {
 			return err
@@ -60,8 +60,8 @@ func WithMongoCustomerRepository(connectionString string) OrderConfiguration {
 }
 
 // WithMemoryProductRepository adds a in memory product repo and adds all input products
-func WithMemoryProductRepository(products []product.Product) OrderConfiguration {
-	return func(s *OrderService) error {
+func WithMemoryProductRepository(products []product.Product) Configuration {
+	return func(s *Service) error {
 		r := memory2.New()
 
 		for _, p := range products {
@@ -78,7 +78,7 @@ func WithMemoryProductRepository(products []product.Product) OrderConfiguration 
 
 // CreateOrder will chain together all repositories to create an order for a customer
 // will return the collected price of all Products
-func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) (float64, error) {
+func (o *Service) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID) (float64, error) {
 	_, err := o.customers.Get(customerID)
 	if err != nil {
 		return 0, err
@@ -98,4 +98,19 @@ func (o *OrderService) CreateOrder(customerID uuid.UUID, productIDs []uuid.UUID)
 	log.Printf("Customer %s has ordered %d products", customerID, len(products))
 
 	return price, nil
+}
+
+// AddCustomer will add a new customer and return the customerID
+func (o *Service) AddCustomer(name string) (uuid.UUID, error) {
+	c, err := customer.NewCustomer(name)
+	if err != nil {
+		return uuid.Nil, err
+	}
+	// Add to Repo
+	err = o.customers.Add(c)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	return c.GetID(), nil
 }

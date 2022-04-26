@@ -4,6 +4,7 @@ package product
 
 import (
 	"errors"
+	"github.com/akolybelnikov/tavern-go-ddd"
 	"github.com/google/uuid"
 )
 
@@ -14,7 +15,7 @@ var (
 // Product is an aggregate that combines item with a price and a quantity
 type Product struct {
 	// item is the root entity which is an Item
-	item  *goddd.Item
+	item  *tavern.Item
 	price float64
 	// quantity is the number of products in stock
 	quantity int
@@ -28,7 +29,7 @@ func NewProduct(name, description string, price float64) (Product, error) {
 	}
 
 	return Product{
-		item: &goddd.Item{
+		item: &tavern.Item{
 			ID:          uuid.New(),
 			Name:        name,
 			Description: description,
@@ -42,7 +43,7 @@ func (p Product) GetId() uuid.UUID {
 	return p.item.ID
 }
 
-func (p Product) GetItem() *goddd.Item {
+func (p Product) GetItem() *tavern.Item {
 	return p.item
 }
 
