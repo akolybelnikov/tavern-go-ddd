@@ -2,7 +2,7 @@
 package memory
 
 import (
-	"github.com/akolybelnikov/goddd/domain/product"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/product"
 	"github.com/google/uuid"
 	"sync"
 )

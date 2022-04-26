@@ -1,7 +1,7 @@
 package memory
 
 import (
-	"github.com/akolybelnikov/goddd/domain/customer"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/customer"
 	"github.com/google/uuid"
 	"testing"
 )

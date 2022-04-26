@@ -3,7 +3,7 @@ package mongo
 
 import (
 	"context"
-	"github.com/akolybelnikov/goddd/domain/customer"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/customer"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

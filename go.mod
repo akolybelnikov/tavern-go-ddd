@@ -1,4 +1,4 @@
-module github.com/akolybelnikov/goddd
+module github.com/akolybelnikov/tavern-go-ddd
 
 go 1.17
 

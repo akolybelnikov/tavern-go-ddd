@@ -3,11 +3,11 @@ package services
 
 import (
 	"context"
-	"github.com/akolybelnikov/goddd/domain/customer"
-	"github.com/akolybelnikov/goddd/domain/customer/memory"
-	"github.com/akolybelnikov/goddd/domain/customer/mongo"
-	"github.com/akolybelnikov/goddd/domain/product"
-	memory2 "github.com/akolybelnikov/goddd/domain/product/memory"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/customer"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/customer/memory"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/customer/mongo"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/product"
+	memory2 "github.com/akolybelnikov/tavern-go-ddd/domain/product/memory"
 	"github.com/google/uuid"
 	"log"
 )

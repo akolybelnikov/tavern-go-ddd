@@ -3,7 +3,7 @@ package memory
 
 import (
 	"fmt"
-	"github.com/akolybelnikov/goddd/domain/customer"
+	"github.com/akolybelnikov/tavern-go-ddd/domain/customer"
 	"github.com/google/uuid"
 	"sync"
 )

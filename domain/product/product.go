@@ -4,7 +4,6 @@ package product
 
 import (
 	"errors"
-	"github.com/akolybelnikov/goddd"
 	"github.com/google/uuid"
 )
 
